@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site site="http://(www\.)?syfy\.com/.*"
+	plugin="(flvPlayer|akamaiHD)\.swf"
+	initialState="playing"
+	version="1.0">
+
+	<crop x="0" y="0" width="0" height="0" />
+
+	<state name="playing">
+		<event>
+			<condition>
+				<javascript script="true ? 1 : 0" matches="1" />
+			</condition>
+			<action>
+				<!-- add stuff later -->
+			</action>
+		</event>
+	</state>
+</site>

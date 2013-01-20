@@ -6,7 +6,6 @@
 	initialState="initialize"
 	version="7.0">
 
-	<setCookie domain="www.fox.com" path="/" name="volumeCookie" value="100" secure="false" />
 	<crop x="0" y="0" width="620" height="350" />
 
 	<!-- INIT -->
@@ -15,11 +14,20 @@
 			<condition>
 				<and>
 					<frameLoaded />
-					<javascript script="document.evaluate('//object[contains(@data, &quot;player&quot;) and contains(@data, &quot;.swf&quot;)]', document.documentElement, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue !== null ? 1 : 0" matches="1" />
+					<javascript script="document.evaluate('//object[contains(@data, &quot;flvPlayer.swf&quot;)]', document.documentElement, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue !== null ? 1 : 0" matches="1" />
 				</and>
 			</condition>
 			<action>
-				<run script="document.getElementsByTagName('body')[0].innerHTML = document.getElementById('player').innerHTML" />
+				<run script="var d=document;var h=d.getElementsByTagName('html')[0]" />
+				<run script="d.cookie='volumeCookie=100; expires=0; path=/'" />
+				<!-- Remove some elements -->
+				<run script="var divs=d.getElementsByClassName('advertisement');for(var i=0;i&lt;divs.length;i++){divs[i].innerHTML=''}" />
+				<run script="var iframes=d.getElementsByTagName('iframe');for(var i=0;i&lt;iframes.length;i++){iframes[i].src=''}" />
+				<run script="h.innerHTML=d.evaluate('//object[contains(@data, &quot;flvPlayer.swf&quot;)]/parent::*', d.documentElement, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerHTML" />
+				<run script="h.style.width='620px';h.style.height='350px'" />
+				<!-- Setting backgroundColor makes webkit redraw and load the player correcly -->
+				<pause time="2000" />
+				<run script="h.style.backgroundColor='black'" />
 				<lockPlugin />
 				<goto state="playing" />
 			</action>
