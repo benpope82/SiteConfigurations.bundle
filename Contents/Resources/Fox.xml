@@ -25,7 +25,7 @@
 				<run script="var iframes=d.getElementsByTagName('iframe');for(var i=0;i&lt;iframes.length;i++){iframes[i].src=''}" />
 				<run script="h.innerHTML=d.evaluate('//object[contains(@data, &quot;flvPlayer.swf&quot;)]/parent::*', d.documentElement, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerHTML" />
 				<run script="h.style.width='620px';h.style.height='350px'" />
-				<!-- Setting backgroundColor makes webkit redraw and load the player correcly -->
+				<!-- Setting backgroundColor makes webkit redraw and load the player correctly -->
 				<pause time="2000" />
 				<run script="h.style.backgroundColor='black'" />
 				<lockPlugin />
@@ -41,7 +41,7 @@
 				<command name="pause" />
 			</condition>
 			<action>
-				<type key="32" />
+				<run script="FoxPlayer.pause()" />
 				<goto state="paused" />
 			</action>
 		</event>
@@ -54,7 +54,7 @@
 				<command name="play" />
 			</condition>
 			<action>
-				<type key="32" />
+				<run script="FoxPlayer.resume()" />
 				<goto state="playing" />
 			</action>
 		</event>
