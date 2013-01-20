@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site site="http://www.fox.com/.*"
+<site site="http://www.fox.com/.+"
 	plugin="flvPlayer\.swf"
+	manualLock="true"
 	agent="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1"
-	initialState="playing"
-	version="5.0">
+	initialState="initialize"
+	version="7.0">
 
-	<crop x="0" y="-4" width="0" height="0"/>
+	<setCookie domain="www.fox.com" path="/" name="volumeCookie" value="100" secure="false" />
+	<crop x="0" y="0" width="620" height="350" />
+
+	<!-- INIT -->
+	<state name="initialize">
+		<event>
+			<condition>
+				<and>
+					<frameLoaded />
+					<javascript script="document.evaluate('//object[contains(@data, &quot;player&quot;) and contains(@data, &quot;.swf&quot;)]', document.documentElement, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue !== null ? 1 : 0" matches="1" />
+				</and>
+			</condition>
+			<action>
+				<run script="document.getElementsByTagName('body')[0].innerHTML = document.getElementById('player').innerHTML" />
+				<lockPlugin />
+				<goto state="playing" />
+			</action>
+		</event>
+	</state>
 
 	<!-- PLAYING -->
 	<state name="playing">
