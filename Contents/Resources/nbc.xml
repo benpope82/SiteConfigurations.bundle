@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site site="http://(www\.)?plexapp\.tv/embed/nbc\.php"
+<site site="^http://htmlpreview.github.com/\?http://github.com/plexinc-plugins/NBC.bundle/blob/master/Contents/Resources/nbc.html#n?[0-9]{4,}$"
 	plugin="(W|w)idget\.swf"
-	agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:13.0) Gecko/20100101 Firefox/13.0.1"
+	agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:18.0) Gecko/20100101 Firefox/18.0"
 	initialState="loading"
-	version="8.0">
+	version="9.0">
 
 	<crop x="4" y="0" width="768" height="432" />
-
-<!-- New player, new seekbar that doesn't work, argh
-	<seekbar type="simple">
-		<start x="72" y="526" />
-		<end x="630" y="526" />
-		<played>
-			<color rgb="191919" />
-		</played>
-	</seekbar>
--->
 
 	<!-- Loading -->
 	<state name="loading">
