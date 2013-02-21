@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site site="^http://htmlpreview.github.com/\?http://github.com/plexinc-plugins/NBC.bundle/blob/master/Contents/Resources/nbc.html#n?[0-9]{4,}$"
+<site site="^http://resources-cdn.plexapp.com/html/support/com.plexapp.plugins.nbc.html#n?[0-9]{4,}$"
 	plugin="(W|w)idget\.swf"
 	agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:18.0) Gecko/20100101 Firefox/18.0"
 	initialState="loading"
