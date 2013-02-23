@@ -1,40 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site site="http://www.fox.com/.+"
-	plugin="flvPlayer\.swf"
-	manualLock="true"
-	agent="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.83 Safari/537.1"
-	initialState="initialize"
-	version="7.0">
+	plugin="swf/flvPlayer.swf"
+	agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:18.0) Gecko/20100101 Firefox/18.0"
+	initialState="init"
+	version="9.0">
 
-	<crop x="0" y="0" width="620" height="350" />
+	<crop x="0" y="0" width="0" height="0" />
 
-	<!-- INIT -->
-	<state name="initialize">
+	<!-- init -->
+	<state name="init">
 		<event>
 			<condition>
 				<and>
 					<frameLoaded />
+					<javascript script="document.evaluate('//object[contains(@data, &quot;AccessEnabler.swf&quot;)]', document.documentElement, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue !== null ? 1 : 0" matches="1" />
+				</and>
+			</condition>
+			<action>
+				<run script="var interval=window.setInterval(function(){if(document.evaluate('//object[contains(@data,&quot;flvPlayer.swf&quot;)]',document.documentElement,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue==null){location.reload(true);}else{window.clearInterval(interval);}},10000);" />
+				<run script="var divs=document.getElementsByClassName('advertisement');for(var i=0;i&lt;divs.length;i++){divs[i].innerHTML=''}" />
+				<run script="var iframes=document.getElementsByTagName('iframe');for(var i=0;i&lt;iframes.length;i++){iframes[i].src=''}" />
+				<goto state="waiting" />
+			</action>
+		</event>
+	</state>
+
+	<!-- waiting -->
+	<state name="waiting">
+		<event>
+			<condition>
+				<and>
 					<javascript script="document.evaluate('//object[contains(@data, &quot;flvPlayer.swf&quot;)]', document.documentElement, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue !== null ? 1 : 0" matches="1" />
 				</and>
 			</condition>
 			<action>
-				<run script="var d=document;var h=d.getElementsByTagName('html')[0]" />
-				<run script="d.cookie='volumeCookie=100; expires=0; path=/'" />
-				<!-- Remove some elements -->
-				<run script="var divs=d.getElementsByClassName('advertisement');for(var i=0;i&lt;divs.length;i++){divs[i].innerHTML=''}" />
-				<run script="var iframes=d.getElementsByTagName('iframe');for(var i=0;i&lt;iframes.length;i++){iframes[i].src=''}" />
-				<run script="h.innerHTML=d.evaluate('//object[contains(@data, &quot;flvPlayer.swf&quot;)]/parent::*', d.documentElement, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerHTML" />
-				<run script="h.style.width='620px';h.style.height='350px'" />
-				<!-- Setting backgroundColor makes webkit redraw and load the player correctly -->
-				<pause time="2000" />
-				<run script="h.style.backgroundColor='black'" />
-				<lockPlugin />
+				<run script="var divs=document.getElementsByClassName('advertisement');for(var i=0;i&lt;divs.length;i++){divs[i].innerHTML=''}" />
+				<run script="var iframes=document.getElementsByTagName('iframe');for(var i=0;i&lt;iframes.length;i++){iframes[i].src=''}" />
 				<goto state="playing" />
 			</action>
 		</event>
 	</state>
 
-	<!-- PLAYING -->
+	<!-- playing -->
 	<state name="playing">
 		<event>
 			<condition>
@@ -47,7 +54,7 @@
 		</event>
 	</state>
 
-	<!-- PAUSED -->
+	<!-- paused -->
 	<state name="paused">
 		<event>
 			<condition>
