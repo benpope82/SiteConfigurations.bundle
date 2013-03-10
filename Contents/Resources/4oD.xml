@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site site="http://(.+\.)?channel4.com/.+"
+<site site="https://4id\.channel4\.com/"
 	plugin="4odplayer.+swf\?"
 	identifier="com.plexapp.plugins.4oD"
-	agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:13.0) Gecko/20100101 Firefox/13.0.1"
-	initialState="loading"
-	version="7.0">
-
-	<setCookie domain=".channel4.com" path="/" name="c4_cookie_notified" value="notified" secure="false" />
-	<setCookie domain=".channel4.com" path="/" name="c4_cookie_policy" value="A" secure="false" />
+	agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/536.26.17 (KHTML, like Gecko) Version/6.0.2 Safari/536.26.17"
+	initialState="credentials"
+	version="7.9">
 
 	<crop x="0" y="0" width="0" height="-37" />
 
@@ -19,17 +16,78 @@
 		</played>
 	</seekbar>
 
+	<!-- Check for username/password prefs -->
+	<state name="credentials">
+		<event>
+			<condition>
+				<and>
+					<pref name="email" exists="true" />
+					<pref name="password" exists="true" />
+				</and>
+			</condition>
+			<action>
+				<pause time="100" />
+				<goto state="login" />
+			</action>
+		</event>
+
+		<event>
+			<condition>
+				<or>
+					<pref name="email" exists="false" />
+					<pref name="password" exists="false" />
+				</or>
+			</condition>
+			<action>
+				<pause time="100" />
+				<goto state="end" param="Please enter your login credentials in the channel's preferences." />
+			</action>
+		</event>
+	</state>
+
+	<state name="login">
+		<event>
+			<condition>
+				<javascript script="document.getElementById('capture_first_userInformationForm') == null ? 1 : 0" matches="0" />
+			</condition>
+			<action>
+				<run script="document.getElementById('capture_first_signIn_emailAddress').value='${email}';" />
+				<run script="document.getElementById('capture_first_signIn_password').value='${password}';" />
+				<run script="document.getElementById('capture_first_signIn_signInButton').click();" />
+				<goto state="loading" />
+			</action>
+		</event>
+
+		<event>
+			<condition>
+				<javascript script="document.getElementById('capture_first_userInformationForm') == null ? 1 : 0" matches="1" />
+			</condition>
+			<action>
+				<pause time="1000" />
+				<goto state="login" />
+			</action>
+		</event>
+	</state>
+
 	<state name="loading">
 		<event>
 			<condition>
-				<frameLoaded />
+				<javascript script="document.getElementById('catchUpPlayer') == null ? 1 : 0" matches="0" />
 			</condition>
 			<action>
 				<run script="var brandWebSafeTitle=jQuery('meta[name=&quot;brandWebSafeTitle&quot;]').attr('content');document.cookie='C4AccessControlCookie_'+brandWebSafeTitle+'={&quot;allowedToWatch&quot;:18}';" />
-				<run script="var result=document.cookie.match(/C4_Identity=/); var u='${email}'; var p='${password}'; if(result==undefined &amp;&amp; u &amp;&amp; p){var url='http://www.channel4.com/4me/login?formview=modal&amp;redirectUrl=http://www.channel4.com/static/global/html/accesscontrol/login/loginSuccess.htm';var data={name:u,password:p};jQuery.post(url,data,function(data){ });}" />
-				<pause time="2000" />
 				<run script="jQuery('body').html('&lt;object data=&quot;http://www.channel4.com/static/programmes/asset/flash/swf/'+fourodPlayerFile+'?preSelectAsset='+window.location.pathname.split('/').pop()+'&quot; type=&quot;application/x-shockwave-flash&quot; height=&quot;397&quot; width=&quot;640&quot;&gt;&lt;param value=&quot;#000000&quot; name=&quot;bgcolor&quot;&gt;&lt;/object&gt;');" />
 				<goto state="click-to-play" />
+			</action>
+		</event>
+
+		<event>
+			<condition>
+				<javascript script="document.getElementById('catchUpPlayer') == null ? 1 : 0" matches="1" />
+			</condition>
+			<action>
+				<pause time="1000" />
+				<goto state="loading" />
 			</action>
 		</event>
 	</state>
