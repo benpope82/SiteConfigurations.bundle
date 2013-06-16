@@ -49,7 +49,6 @@
 		<event>
 			<condition>
 				<and>
-					<frameLoaded />
 					<javascript script="document.getElementById('capture_first_userInformationForm') == null ? 1 : 0" matches="0" />
 				</and>
 			</condition>
@@ -65,7 +64,6 @@
 		<event>
 			<condition>
 				<and>
-					<frameLoaded />
 					<javascript script="document.getElementById('capture_first_userInformationForm') == null ? 1 : 0" matches="1" />
 				</and>
 			</condition>
